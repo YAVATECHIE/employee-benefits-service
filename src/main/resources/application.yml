@@ -18,7 +18,7 @@ spring:
       hibernate:
         format_sql: true
   kafka:
-    bootstrap-servers: pkc-z9doz.eu-west-1.aws.confluent.cloud:9092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
     properties:
       security.protocol: SASL_SSL
       sasl.mechanism: PLAIN
