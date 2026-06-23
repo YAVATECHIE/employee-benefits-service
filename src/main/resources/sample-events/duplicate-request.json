@@ -1,0 +1,6 @@
+{
+  "requestId": "REQ-1001",
+  "employeeId": "EMP-101",
+  "benefitType": "HEALTHCARE",
+  "requestedAmount": 500
+}

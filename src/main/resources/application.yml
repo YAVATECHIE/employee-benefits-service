@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: employee-benefits-service
+  datasource:
+    url: jdbc:h2:mem:employee-benefits;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+  kafka:
+    bootstrap-servers: pkc-z9doz.eu-west-1.aws.confluent.cloud:9092
+    properties:
+      security.protocol: SASL_SSL
+      sasl.mechanism: PLAIN
+      sasl.jaas.config: >
+        org.apache.kafka.common.security.plain.PlainLoginModule required
+        username='${KAFKA_API_KEY}'
+        password='${KAFKA_API_SECRET}';
+    consumer:
+      group-id: employee-benefits-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.example.employeebenefits.event
+        spring.json.value.default.type: com.example.employeebenefits.event.EmployeeBenefitEvent
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+app:
+  kafka:
+    topics:
+      employee-benefits: employee-benefits
+      benefits-approved: benefits-approved
