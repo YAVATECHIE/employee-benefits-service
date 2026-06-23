@@ -22,6 +22,17 @@ public class BenefitService {
 
     public void approveBenefit(EmployeeBenefitEvent event) {
 
+        if (benefitRequestRepository
+                .findByRequestId(event.requestId())
+                .isPresent()) {
+
+            log.warn(
+                    "Duplicate request detected. requestId={}",
+                    event.requestId());
+
+            return;
+        }
+
         log.info("Calling validation service for {}", event.requestId());
         benefitValidationService.validate(event);
 
