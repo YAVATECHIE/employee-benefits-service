@@ -7,17 +7,24 @@ import com.example.employeebenefits.event.EmployeeBenefitEvent;
 import com.example.employeebenefits.kafka.BenefitApprovedProducer;
 import com.example.employeebenefits.repository.BenefitRequestRepository;
 import java.time.Instant;
+import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BenefitService {
 
     private final BenefitRequestRepository benefitRequestRepository;
     private final BenefitApprovedProducer benefitApprovedProducer;
+    private final BenefitValidationService benefitValidationService;
 
     public void approveBenefit(EmployeeBenefitEvent event) {
+
+        log.info("Calling validation service for {}", event.requestId());
+        benefitValidationService.validate(event);
+
         Instant approvedAt = Instant.now();
 
         BenefitRequest request = BenefitRequest.builder()
