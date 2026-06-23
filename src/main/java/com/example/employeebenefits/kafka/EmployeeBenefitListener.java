@@ -19,7 +19,8 @@ public class EmployeeBenefitListener {
 
     @RetryableTopic(
             attempts = "3",
-            backoff = @Backoff(delay = 2000)
+            backoff = @Backoff(delay = 2000),
+            numPartitions = "3"
     )
     @KafkaListener(
             topics = "${app.kafka.topics.employee-benefits}",
