@@ -33,7 +33,6 @@ public class BenefitService {
             return;
         }
 
-        log.info("Calling validation service for {}", event.requestId());
         benefitValidationService.validate(event);
 
         Instant approvedAt = Instant.now();

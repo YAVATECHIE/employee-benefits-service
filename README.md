@@ -126,6 +126,15 @@ Duplicate delivery / idempotency scenario:
 - The second message is detected as a duplicate.
 - No second database record is created and no second approval event is published.
 
+## Failure Scenarios
+
+The project includes training-only trigger values to demonstrate different failure paths:
+
+| Employee ID | Scenario | Expected Behaviour |
+|-------------|----------|-------------------|
+| EMP-FAIL / SIMULATE-SERVICE-DOWN | Transient infrastructure failure | Retries with exponential backoff, then DLT |
+| EMP-INVALID / SIMULATE-BUSINESS-ERROR | Permanent business validation failure | Sent directly to the DLT (no retries) |
+
 ## H2 Database
 
 H2 console:

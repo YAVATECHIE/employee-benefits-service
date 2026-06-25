@@ -1,0 +1,6 @@
+{
+  "requestId": "REQ-4002",
+  "employeeId": "SIMULATE-BUSINESS-ERROR",
+  "benefitType": "HEALTH",
+  "requestedAmount": 150.00
+}

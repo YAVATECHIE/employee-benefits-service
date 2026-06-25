@@ -1,6 +1,7 @@
 package com.example.employeebenefits.kafka;
 
 import com.example.employeebenefits.event.EmployeeBenefitEvent;
+import com.example.employeebenefits.exception.BusinessValidationException;
 import com.example.employeebenefits.service.BenefitService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,10 +18,13 @@ public class EmployeeBenefitListener {
 
     private final BenefitService benefitService;
 
+    // Infrastructure/transient failures are retryable because the same payload may succeed later.
+    // Permanent business validation failures go directly to the DLT because retrying will not fix the payload.
     @RetryableTopic(
             attempts = "3",
-            backoff = @Backoff(delay = 2000),
-            numPartitions = "3"
+            backoff = @Backoff(delay = 1000, multiplier = 2.0),
+            numPartitions = "3",
+            exclude={BusinessValidationException.class}
     )
     @KafkaListener(
             topics = "${app.kafka.topics.employee-benefits}",

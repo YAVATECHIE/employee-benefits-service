@@ -1,0 +1,6 @@
+{
+  "requestId": "REQ-4001",
+  "employeeId": "SIMULATE-SERVICE-DOWN",
+  "benefitType": "HEALTH",
+  "requestedAmount": 150.00
+}
